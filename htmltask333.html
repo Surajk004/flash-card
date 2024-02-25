@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #tracker-container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="tracker-container">
+        <h1>Fitness Tracker</h1>
+        <p>Steps taken: <span id="steps">0</span></p>
+        <button onclick="incrementSteps()">Add Step</button>
+        <button onclick="resetSteps()">Reset</button>
+    </div>
+
+    <script>
+        let stepCount = 0;
+
+        function incrementSteps() {
+            stepCount++;
+            updateStepsDisplay();
+            checkWaterNotification();
+        }
+
+        function resetSteps() {
+            stepCount = 0;
+            updateStepsDisplay();
+        }
+
+        function updateStepsDisplay() {
+            const stepsDisplay = document.getElementById('steps');
+            stepsDisplay.textContent = stepCount;
+        }
+
+        function checkWaterNotification() {
+            // For simplicity, show the "Drink Water" notification every 5 steps
+            if (stepCount % 5 === 0) {
+                showNotification('Drink Water', 'Stay hydrated!');
+            }
+        }
+
+        function showNotification(title, message) {
+            if (!("Notification" in window)) {
+                alert("This browser does not support desktop notification");
+            } else if (Notification.permission === "granted") {
+                new Notification(title, { body: message });
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(function(permission) {
+                    if (permission === "granted") {
+                        new Notification(title, { body: message });
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
